@@ -56,3 +56,70 @@ a:hover {
 .search-button:hover i {
   color: white !important;
 }
+.flash-sale-wrapper {
+  background-color: #f5f5f5;
+}
+
+.flash-sale-section {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.flash-sale-card .card-title {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.flash-sale-card .badge {
+  font-size: 0.75rem;
+}
+.btn-outline-orange {
+  border: 2px solid #f55524;
+  color: #f55524;
+  background-color: transparent;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.btn-outline-orange:hover {
+  background-color: #f55524;
+  color: white;
+}
+
+.flash-sale-btn {
+  border: 2px solid #f55524;
+  color: #f55524;
+  background-color: transparent;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.flash-sale-btn:hover {
+  background-color: #f55524;
+  color: white;
+}
+.auth-container {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  margin: auto;
+  max-width: 450px;
+}
+
+.btn-orange {
+  background-color: #f55524;
+  color: white;
+  border: none;
+}
+
+.btn-orange:hover {
+  background-color: #e64917;
+}
+
