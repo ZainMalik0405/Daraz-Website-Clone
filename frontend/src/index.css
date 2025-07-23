@@ -1,0 +1,58 @@
+/* Bootstrap + Daraz Theme Overrides */
+
+@import "bootstrap/dist/css/bootstrap.min.css";
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
+/* 🔸 Daraz Orange Theme */
+.bg-orange {
+  background-color: #f55524 !important;
+}
+
+.btn-orange {
+  background-color: #f55524;
+  color: #fff;
+  border: none;
+}
+.btn-orange:hover {
+  background-color: #f55524;
+}
+
+/* 🔹 Global Styling */
+body {
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+}
+.text-orange {
+  color: #f55524;
+}
+
+
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+.navbar-brand {
+  font-size: 1.8rem;
+  letter-spacing: 0.5px;
+}
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 600;
+}
+.search-input:hover {
+  border: 1px solid #f55524 !important;
+  box-shadow: 0 0 5px rgba(245, 85, 36, 0.5);
+}
+
+.search-button:hover {
+  background-color: #f39575 !important;
+}
+
+.search-button:hover i {
+  color: white !important;
+}

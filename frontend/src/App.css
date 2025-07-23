@@ -1,0 +1,31 @@
+/* 🔹 Hero Section Styling */
+.hero-section {
+  background: linear-gradient(to right, #f55524, #f55524);
+  color: white;
+  padding: 60px 0;
+  text-align: center;
+}
+
+/* 🔹 Promo Banner */
+.promo-banner {
+  max-width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin: 20px auto;
+}
+
+/* 🔹 Category Card */
+.category-card {
+  transition: transform 0.3s ease;
+}
+.category-card:hover {
+  transform: translateY(-5px);
+}
+
+/* 🔹 Flash Deal Highlight */
+.flash-deal {
+  background-color: #fff4e6;
+  border-left: 5px solid #f55524;
+  padding: 1rem;
+  margin-top: 30px;
+}
