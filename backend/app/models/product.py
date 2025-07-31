@@ -12,5 +12,4 @@ class Product(BaseModel):
     quantity: int = 0
     rating: Optional[float] = 0.0  # ✅ Will be calculated from reviews
     review_count: Optional[int] = 0
-    is_flash_sale: Optional[bool] = False
     tags: Optional[List[str]] = []

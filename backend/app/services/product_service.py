@@ -1,4 +1,4 @@
-from app.db import db
+from app.services.db import db
 from app.models.product import Product
 
 async def get_all_products():
