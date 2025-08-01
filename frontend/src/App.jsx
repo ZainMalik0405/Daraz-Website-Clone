@@ -5,6 +5,8 @@ import Home from "./pages/Home.jsx";
 import Products from "./pages/Products.jsx";
 import LoginModal from "./pages/Auth/LoginModal.jsx";
 import SignupModal from "./pages/Auth/SignupModal.jsx";
+import AllFlashProducts from "./pages/AllFlashProducts.jsx";
+import ProductDetails from "./pages/ProductDetail.jsx";
 
 function App() {
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -48,6 +50,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products />} />
+        <Route path="/flash-sale-all" element={<AllFlashProducts />} />
+        <Route path="/products/:productId" element={<ProductDetails />} />
       </Routes>
     </Router>
   );

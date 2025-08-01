@@ -10,6 +10,6 @@ class Product(BaseModel):
     image_urls: Optional[List[str]] = []  # ✅ Supports multiple images
     category: Optional[str] = None
     quantity: int = 0
-    rating: Optional[float] = 0.0  # ✅ Will be calculated from reviews
+    rating: Optional[float] = 0.0
     review_count: Optional[int] = 0
     tags: Optional[List[str]] = []
