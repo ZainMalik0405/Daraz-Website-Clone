@@ -4,6 +4,7 @@ import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
+
 const ProductDetail = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
@@ -15,6 +16,42 @@ const ProductDetail = () => {
   const [sort, setSort] = useState("newest");
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const [submitted, setSubmitted] = useState(false);
+  const [quantity, setQuantity] = useState(1);
+
+// Buy Now → go to checkout with product and quantity
+const handleBuyNow = () => {
+  navigate("/checkout", {
+    state: {
+      items: [{
+        product_id: productId,
+        name: product.name,
+        price: product.discounted_price,
+        image: mainImage,
+        quantity
+      }]
+    }
+  });
+};
+
+// Add to Cart → store in localStorage or context
+const handleAddToCart = () => {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const existing = cart.find(item => item.product_id === productId);
+  if (existing) {
+    existing.quantity = Math.min(10, existing.quantity + quantity);
+  } else {
+    cart.push({
+      product_id: productId,
+      name: product.name,
+      price: product.discounted_price,
+      image: mainImage,
+      quantity
+    });
+  }
+  localStorage.setItem("cart", JSON.stringify(cart));
+};
+
 
   useEffect(() => {
     axios.get(`http://localhost:8025/products/${productId}`)
@@ -47,23 +84,26 @@ const ProductDetail = () => {
     fetchReviews();
   }, [productId, sort, page]);
 
-  const submitReview = () => {
-    const reviewPayload = {
-      user: newReview.user,
-      rating: newReview.rating,
-      comment: newReview.comment,
-      product_id: productId,
-      timestamp: new Date().toISOString()
-    };
-
-    axios.post("http://localhost:8025/reviews", reviewPayload)
-      .then(() => {
-        setNewReview({ user: "", rating: 5, comment: "" });
-        setPage(1);
-        fetchReviews();
-      })
-      .catch(err => console.error("Error submitting review:", err));
+const submitReview = () => {
+  const reviewPayload = {
+    user: newReview.user,
+    rating: newReview.rating,
+    comment: newReview.comment,
+    product_id: productId,
+    timestamp: new Date().toISOString()
   };
+
+  axios.post("http://localhost:8025/reviews", reviewPayload)
+    .then(() => {
+      setNewReview({ user: "", rating: 5, comment: "" });
+      setSubmitted(true);
+      setTimeout(() => setSubmitted(false), 2000);
+      setPage(1);
+      fetchReviews();
+    })
+    .catch(err => console.error("Error submitting review:", err));
+};
+
 
   if (loading) return <div className="text-center py-5">⏳ Loading product...</div>;
   if (!product) return <div className="text-center py-5 text-danger">⚠️ Product not found</div>;
@@ -104,9 +144,40 @@ const ProductDetail = () => {
               </div>
             </div>
           )}
+          <div className="mt-3">
+  <label className="form-label fw-bold">Quantity</label>
+  <div className="d-flex align-items-center gap-2">
+    <button
+      className="btn btn-outline-secondary"
+      onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
+      disabled={quantity <= 1}
+    >
+      −
+    </button>
+    <input
+      type="number"
+      className="form-control text-center"
+      style={{ width: "60px" }}
+      value={quantity}
+      onChange={(e) => {
+        const val = Math.min(10, Math.max(1, Number(e.target.value)));
+        setQuantity(val);
+      }}
+    />
+    <button
+      className="btn btn-outline-secondary"
+      onClick={() => setQuantity(prev => Math.min(10, Math.min(product.quantity, prev + 1)))}
+      disabled={quantity >= Math.min(10, product.quantity)}
+    >
+      +
+    </button>
+  </div>
+  <small className="text-muted">Max 10 per order. Available: {product.quantity}</small>
+</div>
+
           <div className="mt-4 d-flex gap-3">
-            <button className="btn btn-success">Buy Now</button>
-            <button className="btn btn-outline-secondary">Add to Cart</button>
+            <button className="btn btn-success" onClick={handleBuyNow}>Buy Now</button>
+            <button className="btn btn-outline-secondary" onClick={handleAddToCart}>Add to Cart</button>
           </div>
         </div>
       </div>
@@ -115,21 +186,34 @@ const ProductDetail = () => {
         <h4 className="mb-4 fw-bold text-uppercase" style={{ color: "#f57224" }}>🗣️ Customer Reviews</h4>
 
         <div className="mb-4">
-          {[5, 4, 3, 2, 1].map(star => {
-            const count = reviews.filter(r => r.rating === star).length;
-            const percent = reviews.length ? Math.round((count / reviews.length) * 100) : 0;
-            const emoji = star === 5 ? "😍" : star === 1 ? "😡" : "🙂";
-            return (
-              <div key={star} className="d-flex align-items-center mb-1">
-                <span className="me-2 text-dark" style={{ width: "60px" }}>{emoji} {star}</span>
-                <div className="progress flex-grow-1" style={{ height: "8px" }}>
-                  <div className="progress-bar bg-warning" role="progressbar" style={{ width: `${percent}%` }}></div>
-                </div>
-                <span className="ms-2 text-muted small">{count}</span>
-              </div>
-            );
-          })}
+  {[5, 4, 3, 2, 1].map(star => {
+    const count = reviews.filter(r => r.rating === star).length;
+    const percent = reviews.length ? Math.round((count / reviews.length) * 100) : 0;
+    const emojiMap = {
+      5: "😍",
+      4: "🙂",
+      3: "😐",
+      2: "😕",
+      1: "😡"
+    };
+    return (
+      <div key={star} className="mb-2">
+        <div className="d-flex justify-content-between align-items-center">
+          <span className="text-dark fw-bold">{emojiMap[star]} {star} Stars</span>
+          <span className="text-muted small">{count} reviews</span>
         </div>
+        <div className="progress" style={{ height: "10px" }}>
+          <div
+            className="progress-bar bg-warning"
+            role="progressbar"
+            style={{ width: `${percent}%` }}
+          ></div>
+        </div>
+      </div>
+    );
+  })}
+</div>
+
 
         {reviews.length === 0 ? (
           <p className="text-muted">No reviews yet. Be the first to share your thoughts!</p>
@@ -220,6 +304,11 @@ const ProductDetail = () => {
     >
       Submit Review
     </button>
+    {submitted && (
+  <div className="text-success text-center mt-3" style={{ transition: "opacity 0.5s ease-in-out" }}>
+    ✅ Review submitted successfully!
+  </div>
+)}
   </div>
 </div>
     </div>
