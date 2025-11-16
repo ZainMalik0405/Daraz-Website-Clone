@@ -4,9 +4,10 @@ import FlashSale from "../components/FlashSale.jsx";
 
 const Home = () => (
   <>
-    <Slider />
+    
     <PromoBanner />
     <FlashSale />
+    <Slider />
   </>
 );
 
